@@ -28,6 +28,7 @@ func main() {
 	// CheckError("Error opening database:", err)
 	if err != nil {
 		fmt.Println("Error opening database:")
+		return
 	}
 
 	// Close database
@@ -37,6 +38,7 @@ func main() {
 	err = db.Ping()
 	if err != nil {
 		fmt.Println("Error pinging database:")
+		return
 	}
 
 	fmt.Println("Connected!")
