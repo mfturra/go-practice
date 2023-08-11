@@ -49,17 +49,30 @@ func main() {
 	// Dynamic Insertion of Data
 	insertData := `INSERT INTO "videogames" ("videogame_title", "videogame_platform", "videogame_releasedate", "videogame_publisher") VALUES($1, $2, $3, $4)`
 	// var videogameID uint32
-	_, err = db.Exec(insertData, "NFL Street", "Playstation 2", "2004-01-13", "EA Sports BIG")
+	_, err = db.Exec(insertData, "Spider-Man 2", "Playstation 2", "June 28, 2004", "Activision")
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Data insertion successful!")
 
 	// Query Table
-	// rows, err := db.Query(fmt.Sprintf("SELECT * FROM %s", table))
-	// msg := "Error executing query"
-	// if err != nil {
-	// 	log.Fatalf("%s: %v", msg, err)
-	// }
-	// defer rows.Close()
+	rows, err := db.Query(fmt.Sprintf(`SELECT "videogame_title", "videogame_platform" FROM %s`, table))
+	if err != nil {
+		fmt.Println("Error executing query")
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var videogame_title string
+		var videogame_platform string
+
+		err = rows.Scan(&videogame_title, &videogame_platform)
+		if err != nil {
+			fmt.Println("Error executing query")
+			return
+		}
+
+		fmt.Println(videogame_title, videogame_platform)
+	}
 }
